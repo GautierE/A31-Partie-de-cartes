@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Pli {
 
 	// La liste ordonnée des cartes composant le pli
-	private ArrayList<Carte> cartes = new ArrayList<>( 4 );
+	private final ArrayList<Carte> cartes = new ArrayList<>( 4 );
 	
 
 	
@@ -44,7 +44,7 @@ public class Pli {
 	public int indexGagnante(Couleur atout) {
 		
 		int num_gagnante = 0;
-		Couleur c_gagnante = cartes.get(0).getCouleur();;
+		Couleur c_gagnante = cartes.get(0).getCouleur();
 		int r_gagnante = cartes.get(0).getRang();
 		for( int i = 1; i < 4; i++ ) {
 			Couleur c = cartes.get(i).getCouleur();
@@ -95,4 +95,4 @@ public class Pli {
 		return cartes.toString();
 	}
 
-};
+}

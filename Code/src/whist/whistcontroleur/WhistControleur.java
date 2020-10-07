@@ -1,6 +1,3 @@
-/**
- * 
- */
 package whist.whistcontroleur;
 
 import observateursujet.Sujet;
@@ -17,7 +14,7 @@ import whist.whistmodel.Pli;
  */
 public class WhistControleur extends Sujet {
 
-	private Partie partie;
+	private final Partie partie;
 
 	private Joueur joueurCourant;
 
@@ -108,19 +105,20 @@ public class WhistControleur extends Sujet {
 	protected void distribuerCartes() {
 
 		PaquetDeCartes pc = new PaquetDeCartes(52);
-		;
+
 		int j = 0;
 		Carte c = null;
-		;
+
 		while (pc.hasNext()) {
 			c = pc.donnerCarte();
 			partie.getJoueur(j).recevoirCarte(c);
 			j = (j + 1) % 4;
 		}
 
+		assert c != null;
 		partie.setAtout(c.getCouleur());
 
-	};
+	}
 
 	/**
 	 * Renvoie l'instance de Partie associée à ce controleur.
@@ -163,7 +161,7 @@ public class WhistControleur extends Sujet {
 	/**
 	 * Utilisé par les vues pour désigner la carte choisie par un des joueurs.
 	 * 
-	 * @param cartJouee la nouvelle valeur de l'attribur carteCourante
+	 * @param carteJouee la nouvelle valeur de l'attribur carteCourante
 	 */
 	public void setCarteCourante(Carte carteJouee) {
 		this.carteCourante = carteJouee;

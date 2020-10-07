@@ -8,8 +8,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Point;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -22,7 +20,6 @@ import whist.whistmodel.Carte;
 import whist.whistmodel.Joueur;
 import whist.whistmodel.Pli;
 
-/************************************************************/
 /**
  * 
  */
@@ -116,7 +113,7 @@ public class VueJoueur extends JFrame implements Observateur {
 		mettreAJour();
 	}
 
-	/*
+	/**
 	 * Mets à jour les données affichées par cette fenêtre en interrogeant le
 	 * contrôleur. 
 	 * Seul le joueur associé à cette vue est interrogé directement
@@ -143,7 +140,7 @@ public class VueJoueur extends JFrame implements Observateur {
 		JPanel equipes = (JPanel) ((Container) bl.getLayoutComponent(BorderLayout.WEST)).getComponent(1);
 		for( int i = 0; i < 2; i++ ) {
 			int plisEq = controleur.getPartie().getEquipe(i).getPlis().size();
-			( (JLabel) ( (Container) equipes ).getComponent(1+2*i) ).setText( String.valueOf( plisEq + " plis" ) );
+			( (JLabel) ( equipes ).getComponent(1+2*i) ).setText( plisEq + " plis" );
 		}
 
 		JList<Carte> main = (JList<Carte>) bl.getLayoutComponent(BorderLayout.EAST);
@@ -178,7 +175,7 @@ public class VueJoueur extends JFrame implements Observateur {
 		BorderLayout bl = (BorderLayout) getContentPane().getLayout();
 		JList<Carte> main = (JList<Carte>) bl.getLayoutComponent(BorderLayout.EAST);
 		if (main.getSelectedValue() != null) {
-			controleur.setCarteCourante((Carte) main.getSelectedValue());
+			controleur.setCarteCourante(main.getSelectedValue());
 			main.clearSelection();
 			controleur.avancer();
 		}
@@ -193,7 +190,8 @@ public class VueJoueur extends JFrame implements Observateur {
 	 */	
 	protected Point calculerPosition(int width, int height) {
 		Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
-		int i = -1;
+		int i;
+
 		switch (i = controleur.getPartie().getJoueurs().indexOf(joueur)) {
 		case 0:
 			p.translate(-width / 2, -3 * height / 2);
@@ -213,4 +211,4 @@ public class VueJoueur extends JFrame implements Observateur {
 		return p;
 	}
 
-};
+}

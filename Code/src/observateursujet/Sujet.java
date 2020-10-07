@@ -8,9 +8,9 @@ public abstract class Sujet {
 	List<Observateur> mesObservateurs = new ArrayList<>( ); 
 	
 	protected void notifierObservateurs() {
-		
-		for( int i = 0; i < mesObservateurs.size(); i++ )
-			mesObservateurs.get(i).mettreAJour();
+
+		for (Observateur mesObservateur : mesObservateurs)
+			mesObservateur.mettreAJour();
 		
 	}
 	

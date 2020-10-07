@@ -13,7 +13,7 @@ public class PaquetDeCartes {
 	
 	/**
 	 * Construit un paquet de 52 cartes.
-	 * @param j 
+	 * @param n nombre de cartes
 	 * 
 	 */
 	public PaquetDeCartes(int n) {
@@ -43,4 +43,4 @@ public class PaquetDeCartes {
 	public boolean hasNext() {
 		return cartes.size() > 0;
 	}
-};
+}

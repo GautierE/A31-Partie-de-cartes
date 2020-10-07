@@ -3,7 +3,6 @@ package whist;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Window;
-import java.util.ListIterator;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;

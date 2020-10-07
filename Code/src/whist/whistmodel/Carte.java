@@ -5,8 +5,8 @@ package whist.whistmodel;
  */
 public class Carte {
 
-	private Couleur couleur;
-	private int rang;
+	private final Couleur couleur;
+	private final int rang;
 	
 	/**
 	 * Constructeur.
@@ -51,4 +51,4 @@ public class Carte {
 	public String toString() {
 		return couleur.name()+String.format("_%X", rang+2);
 	}
-};
+}

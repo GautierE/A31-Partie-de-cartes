@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Modélise un joueur d'une partie de whist.
  */
-public class Joueur { //extends Sujet{
+public class Joueur {
 	
 	private final String nom;
 	private final ArrayList<Carte> cartes = new ArrayList<>(13);
@@ -129,8 +129,4 @@ public class Joueur { //extends Sujet{
 	public ArrayList<Carte> getCartes() {
 		return new ArrayList<>( cartes );
 	}
-	
-
-
-	
-};
+}

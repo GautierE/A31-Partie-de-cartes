@@ -9,7 +9,7 @@ import java.util.List;
 public class Partie {
 	
 	private Couleur atout;
-	private Joueur[] joueur = new Joueur[4];
+	private final Joueur[] joueur = new Joueur[4];
 
 	
 	/**
@@ -130,4 +130,4 @@ public class Partie {
 		return new int[] { getEquipe( 0 ).getPoints(), getEquipe( 1 ).getPoints() };
 	}
 
-};
+}

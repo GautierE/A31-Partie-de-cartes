@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class Equipe {
 
 	// Les plis remportés par l'équipe
-	private ArrayList<Pli> plis =  new ArrayList<>(13);
+	private final ArrayList<Pli> plis =  new ArrayList<>(13);
 	
 	private int  points = 0;
 	
-	private MethodeDeDecompteDesPoints decompte;
+	private final MethodeDeDecompteDesPoints decompte;
 	
 	
 	/**
@@ -64,7 +64,7 @@ public class Equipe {
 	 * Mets à jour les points de l'équipe à la fin d'une donne
 	 * et vide la liste des plis en cours.
 	 * 
-	 * @param la couleur d'atout
+	 * @param atout la couleur d'atout
 	 */
 	public void compterPoints( Couleur atout ) {
 
@@ -84,4 +84,4 @@ public class Equipe {
 	public String toString() {
 		return plis.toString();
 	}
-};
+}
