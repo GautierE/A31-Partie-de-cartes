@@ -3,6 +3,7 @@ package whist;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Window;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import whist.whistcontroleur.WhistControleur;
 import whist.whistmodel.Joueur;
 import whist.whistmodel.Partie;
+import whist.whistvue.VueDonneur;
 import whist.whistvue.VueJoueur;
 
 public class Whist {
@@ -39,10 +41,17 @@ public class Whist {
 		WhistControleur ctrl = new WhistControleur( p );
 
 		// Création des quatre interfaces graphiques
-		for( Joueur j: p.getJoueurs() )
-			new VueJoueur( ctrl, j );
+		/*for( Joueur j: p.getJoueurs() )
+			new VueJoueur( ctrl, j );*/
+
+		ArrayList<VueJoueur> avj = new ArrayList<>();
+		for(int i = 0;i<p.getJoueurs().size();i++) {
+			avj.add(new VueJoueur(ctrl, p.getJoueur(i)));
+			if(i == p.getJoueurs().size() - 1){
+				new VueDonneur(avj.get(i));
+			}
+		}
 		
-		ctrl.avancer();
 	}
 
 }

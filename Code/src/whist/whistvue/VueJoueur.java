@@ -211,4 +211,19 @@ public class VueJoueur extends JFrame implements Observateur {
 		return p;
 	}
 
+	public WhistControleur getControleur() {
+		return controleur;
+	}
+
+	public void setControleur(WhistControleur controleur) {
+		this.controleur = controleur;
+	}
+
+	public Joueur getJoueur() {
+		return joueur;
+	}
+
+	public void setJoueur(Joueur joueur) {
+		this.joueur = joueur;
+	}
 }

@@ -18,6 +18,8 @@ public class WhistControleur extends Sujet {
 
 	private Joueur joueurCourant;
 
+	private Joueur donneur;
+
 	private Carte carteCourante;
 
 	private Pli pliCourant;
@@ -43,12 +45,10 @@ public class WhistControleur extends Sujet {
 
 		if (pliCourant == null) {
 			// début de la donne
-			Joueur donneur = partie.getJoueur(0);
-			distribuerCartes();
+			donneur = partie.getJoueur(0);
 			pliCourant = new Pli();
 			joueurCourant = partie.getJoueurGauche(donneur);
 		}
-
 		else {
 			// Vérification de la règle du jeu et du joueur qui posé la carte
 			boolean succes = true;
@@ -73,7 +73,6 @@ public class WhistControleur extends Sujet {
 			if (pliCourant.taille() < 4)
 				// au moins encore 1 carte à jouer dans ce pli
 				joueurCourant = partie.getJoueurGauche(joueurCourant);
-
 			else {
 				// Pli terminé
 				// Remarque: le joueur à gauche du joueur courant est celui qui a commencé le
@@ -86,10 +85,26 @@ public class WhistControleur extends Sujet {
 					joueurCourant = gagnant;
 					pliCourant = new Pli();
 				}
-				
-				else
-					for( int i = 0; i < 2; i++ )
-						partie.getEquipe( i ).compterPoints( partie.getAtout() );
+				else {
+					for (int i = 0; i < 2; i++) {
+						partie.getEquipe(i).compterPoints(partie.getAtout());
+
+						// Si une des equipes a atteint 20 points
+						if(partie.getEquipe(i).getPoints() >= 20)
+						{
+							// TODO Arreter le jeu et afficher le vainqueur
+							pliCourant = null;
+						}
+					}
+
+					//TODO ajout changer donneur et pli = null + compter points + afficher vainqueur
+
+					// Recommence une donne en changeant de donneur
+					donneur = partie.getJoueurGauche(donneur);
+					distribuerCartes();
+					pliCourant = new Pli();
+					joueurCourant = partie.getJoueurGauche(donneur);
+				}
 			}
 		}
 
@@ -97,12 +112,13 @@ public class WhistControleur extends Sujet {
 
 	}
 
+	// TODO de base protected pas public
 	/**
 	 * Distribue les cartes aux joueurs et fixe l'atout.
 	 * 
 	 * Les cartes sont distribuées de façon aléatoire.
 	 */
-	protected void distribuerCartes() {
+	public void distribuerCartes() {
 
 		PaquetDeCartes pc = new PaquetDeCartes(52);
 
