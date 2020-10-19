@@ -2,7 +2,7 @@ package whist.whistvue;
 
 public abstract class VueDecorator extends VueJoueur
 {
-    private VueJoueur vueJ;
+    private final VueJoueur vueJ;
 
     public VueDecorator(VueJoueur vueJ)
     {

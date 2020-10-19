@@ -42,11 +42,14 @@ public class VueDonneur extends VueDecorator
 
     // Méthode appelée par le donneur pour distribuer les cartes aux joueurs
     public void distribuerCartes( ) {
-        getControleur().distribuerCartes();
         BorderLayout bl = (BorderLayout) this.getContentPane().getLayout();
         Component nordWest = ( (Container) bl.getLayoutComponent(BorderLayout.WEST) ).getComponent( 0 ) ;
         JButton distribuer = (JButton) ( (Container) nordWest ).getComponent( 0 );
         JButton commencer = (JButton) ( (Container) nordWest ).getComponent( 1 );
+
+        if(distribuer.getForeground() == Color.RED){
+            getControleur().distribuerCartes();
+        }
 
         distribuer.setForeground(Color.LIGHT_GRAY);
         commencer.setForeground(Color.RED);
@@ -54,11 +57,12 @@ public class VueDonneur extends VueDecorator
 
     // Méthode appelée par le donneur après avoir distribué les cartes pour lancer la partie
     public void commencerPartie() {
-
-        super.getVueJ().getControleur().avancer();
-
         BorderLayout bl = (BorderLayout) this.getContentPane().getLayout();
         JButton go = (JButton) ( (Container) ( (Container) bl.getLayoutComponent(BorderLayout.WEST) ).getComponent( 0 ) ).getComponent( 1 );
+
+        if(go.getForeground() == Color.RED){
+            getControleur().avancer();
+        }
         go.setForeground( Color.LIGHT_GRAY );
     }
 

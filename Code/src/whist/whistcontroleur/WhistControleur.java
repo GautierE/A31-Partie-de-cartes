@@ -1,6 +1,5 @@
 package whist.whistcontroleur;
 
-import observateursujet.Sujet;
 import whist.whistmodel.Carte;
 import whist.whistmodel.Couleur;
 import whist.whistmodel.Joueur;
@@ -12,30 +11,18 @@ import whist.whistmodel.Pli;
  * @author loic
  *
  */
-public class WhistControleur extends Sujet {
-
-	private final Partie partie;
-
-	private Joueur joueurCourant;
-
-	private Joueur donneur;
-
-	private Carte carteCourante;
-
-	private boolean partieFinie;
-
-	private Pli pliCourant;
+public class WhistControleur extends TemplateControleur {
 
 	
 	// Constructeur
 
 	/**
-	 * Renvoie un controleur associé à une instance de Partie.
+	 * Renvoie un controleur associé à une instance de partie.
 	 * 
 	 * @param p la partie de cartes controlée par ce controleur
 	 */
 	public WhistControleur(Partie p) {
-		this.partie = p;
+		setPartie(p);
 	}
 	
 	// Méthodes d'instances
@@ -45,62 +32,62 @@ public class WhistControleur extends Sujet {
 	 */
 	public void avancer() {
 
-		if (pliCourant == null) {
+		if (getPliCourant() == null) {
 			// début de la donne
-			donneur = partie.getJoueur(0);
-			pliCourant = new Pli();
-			joueurCourant = partie.getJoueurGauche(donneur);
+			setDonneur(getPartie().getJoueur(0));
+			setPliCourant(new Pli());
+			setJoueurCourant(getPartie().getJoueurGauche(getDonneur()));
 		}
 		else {
 			// Vérification de la règle du jeu et du joueur qui posé la carte
 			boolean succes = true;
 
-			if (pliCourant.taille() > 0) {
-				Couleur demandee = pliCourant.getCouleurDemandee();
-				succes = carteCourante.getCouleur() == demandee || !joueurCourant.possede(demandee);
+			if (getPliCourant().taille() > 0) {
+				Couleur demandee = getPliCourant().getCouleurDemandee();
+				succes = getCarteCourante().getCouleur() == demandee || !getJoueurCourant().possede(demandee);
 			}
 
 			if (!succes)
 				return;
 
 			// le joueur courant joue la carte courante
-			succes = joueurCourant.jouer(carteCourante);
+			succes = getJoueurCourant().jouer(getCarteCourante());
 
 			if (!succes)
-				// Le joueurCourant ne possède pas la carteCourante !
+				// Le joueur courant ne possède pas la carte Courante !
 				return;
 
-			pliCourant.add(carteCourante);
-			if (pliCourant.taille() < 4)
+			getPliCourant().add(getCarteCourante());
+			if (getPliCourant().taille() < 4)
 				// au moins encore 1 carte à jouer dans ce pli
-				joueurCourant = partie.getJoueurGauche(joueurCourant);
+				setJoueurCourant(getPartie().getJoueurGauche(getJoueurCourant()));
 			else {
 				// Pli terminé
 				// Remarque: le joueur à gauche du joueur courant est celui qui a commencé le
 				// pli courant
-				Joueur gagnant = partie.getJoueurGagnant(pliCourant, partie.getJoueurGauche(joueurCourant));
-				gagnant.ramasserPli(pliCourant);
+				Joueur gagnant = getPartie().getJoueurGagnant(getPliCourant(), getPartie().getJoueurGauche(getJoueurCourant()));
+				gagnant.ramasserPli(getPliCourant());
 
-				if (joueurCourant.possedeCarte()) {
+				if (getJoueurCourant().possedeCarte()) {
 					// au moins encore une levée à faire
-					joueurCourant = gagnant;
-					pliCourant = new Pli();
+					setJoueurCourant(gagnant);
+					setPliCourant(new Pli());
 				}
 				else {
 					for (int i = 0; i < 2; i++)
 					{
-						partie.getEquipe(i).compterPoints(partie.getAtout());
+						getPartie().getEquipe(i).compterPoints(getPartie().getAtout());
 					}
-					if(partie.getEquipe(0).getPoints() < 20 || partie.getEquipe(1).getPoints() < 20)
+					if(getPartie().getEquipe(0).getPoints() < 20 || getPartie().getEquipe(1).getPoints() < 20)
 					{
 						// Recommence une donne en changeant de donneur
-						donneur = partie.getJoueurGauche(donneur);
-						pliCourant = new Pli();
-						joueurCourant = partie.getJoueurGauche(donneur);
+						setDonneur(getPartie().getJoueurGauche(getDonneur()));
+						setPliCourant(new Pli());
+						setJoueurCourant(getPartie().getJoueurGauche(getDonneur()));
 					}
 					else
 					{
-						partieFinie = true;
+						setPartieFinie(true);
 					}
 				}
 			}
@@ -123,68 +110,12 @@ public class WhistControleur extends Sujet {
 
 		while (pc.hasNext()) {
 			c = pc.donnerCarte();
-			partie.getJoueur(j).recevoirCarte(c);
+			getPartie().getJoueur(j).recevoirCarte(c);
 			j = (j + 1) % 4;
 		}
 
 		assert c != null;
-		partie.setAtout(c.getCouleur());
+		getPartie().setAtout(c.getCouleur());
 		notifierObservateurs();
-	}
-
-	/**
-	 * Renvoie l'instance de Partie associée à ce controleur.
-	 * 
-	 * @return la partie controlée par ce controleur
-	 */
-	public Partie getPartie() {
-		return partie;
-	}
-
-	/**
-	 * Renvoie le joueur actif dans la donne en cours.
-	 * 
-	 * @return le joueurCourant
-	 */
-	public Joueur getJoueurCourant() {
-		return joueurCourant;
-	}
-
-	/**
-	 * Renvoie le pli en cours de construction dans le tour de table.
-	 * 
-	 * @return le pliCourant
-	 */
-	public Pli getPliCourant() {
-		return pliCourant;
-	}
-
-	/**
-	 * Renvoie la carte jouée par le joueur courant.
-	 * 
-	 * @return la dernière carte sélectionné par une des vues.
-	 */
-	public Carte getCarteCourante() {
-		return carteCourante;
-	}
-
-	// Modifieur
-
-	/**
-	 * Utilisé par les vues pour désigner la carte choisie par un des joueurs.
-	 * 
-	 * @param carteJouee la nouvelle valeur de l'attribur carteCourante
-	 */
-	public void setCarteCourante(Carte carteJouee) {
-		this.carteCourante = carteJouee;
-	}
-
-	public Joueur getDonneur()
-	{
-		return donneur;
-	}
-
-	public boolean isPartieFinie() {
-		return partieFinie;
 	}
 }
