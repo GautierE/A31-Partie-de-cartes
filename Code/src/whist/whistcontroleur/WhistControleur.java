@@ -22,6 +22,8 @@ public class WhistControleur extends Sujet {
 
 	private Carte carteCourante;
 
+	private boolean partieFinie;
+
 	private Pli pliCourant;
 
 	
@@ -86,29 +88,26 @@ public class WhistControleur extends Sujet {
 					pliCourant = new Pli();
 				}
 				else {
-					for (int i = 0; i < 2; i++) {
+					for (int i = 0; i < 2; i++)
+					{
 						partie.getEquipe(i).compterPoints(partie.getAtout());
-
-						// Si une des equipes a atteint 20 points
-						if(partie.getEquipe(i).getPoints() >= 20)
-						{
-							// TODO Arreter le jeu et afficher le vainqueur
-							pliCourant = null;
-						}
 					}
 
-					//TODO ajout changer donneur et pli = null + compter points + afficher vainqueur
-
-					// Recommence une donne en changeant de donneur
-					donneur = partie.getJoueurGauche(donneur);
-					distribuerCartes();
-					pliCourant = new Pli();
-					joueurCourant = partie.getJoueurGauche(donneur);
+					if(partie.getEquipe(0).getPoints() < 3 || partie.getEquipe(1).getPoints() < 3)
+					{
+						// Recommence une donne en changeant de donneur
+						donneur = partie.getJoueurGauche(donneur);
+						pliCourant = new Pli();
+						joueurCourant = partie.getJoueurGauche(donneur);
+					}
+					else
+					{
+						partieFinie = true;
+					}
 				}
 			}
 		}
-
-	notifierObservateurs();
+		notifierObservateurs();
 
 	}
 
@@ -120,7 +119,8 @@ public class WhistControleur extends Sujet {
 	 */
 	public void distribuerCartes() {
 
-		PaquetDeCartes pc = new PaquetDeCartes(52);
+		//TODO 52
+		PaquetDeCartes pc = new PaquetDeCartes(16);
 
 		int j = 0;
 		Carte c = null;
@@ -133,7 +133,7 @@ public class WhistControleur extends Sujet {
 
 		assert c != null;
 		partie.setAtout(c.getCouleur());
-
+		notifierObservateurs();
 	}
 
 	/**
@@ -183,4 +183,17 @@ public class WhistControleur extends Sujet {
 		this.carteCourante = carteJouee;
 	}
 
+	public Joueur getDonneur()
+	{
+		return donneur;
+	}
+
+	public void setDonneur(Joueur donneur)
+	{
+		this.donneur = donneur;
+	}
+
+	public boolean isPartieFinie() {
+		return partieFinie;
+	}
 }

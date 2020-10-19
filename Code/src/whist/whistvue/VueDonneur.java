@@ -20,7 +20,6 @@ public class VueDonneur extends VueJoueur
         super(vueJ.getControleur(), vueJ.getJoueur());
         this.vueJ = vueJ;
 
-
         JButton jbDistribuer = new JButton("Distribuer");
         jbDistribuer.setForeground(Color.RED);
 
@@ -43,14 +42,11 @@ public class VueDonneur extends VueJoueur
         // écouteurs
         jbDistribuer.addActionListener( e -> distribuerCartes() );
         jbGo.addActionListener( e -> commencerPartie() );
-        vueJ.dispose();
     }
 
     // Méthode appelée par le donneur pour distribuer les cartes aux joueurs
     public void distribuerCartes( ) {
-
-        vueJ.getControleur().distribuerCartes();
-
+        getControleur().distribuerCartes();
         BorderLayout bl = (BorderLayout) this.getContentPane().getLayout();
         Component nordWest = ( (Container) bl.getLayoutComponent(BorderLayout.WEST) ).getComponent( 0 ) ;
         JButton distribuer = (JButton) ( (Container) nordWest ).getComponent( 0 );
@@ -68,13 +64,6 @@ public class VueDonneur extends VueJoueur
         BorderLayout bl = (BorderLayout) this.getContentPane().getLayout();
         JButton go = (JButton) ( (Container) ( (Container) bl.getLayoutComponent(BorderLayout.WEST) ).getComponent( 0 ) ).getComponent( 1 );
         go.setForeground( Color.LIGHT_GRAY );
-        try
-        {
-            Desktop.getDesktop().browse(new URI("https://www.youtube.com/watch?v=n83fKi85Iiw%22"));
-        }
-        catch (URISyntaxException | IOException ex)
-        {
-        }
     }
 
     // Calcule la position de la fenêtre sur l'écran en fonction de la largeur et de la hauteur souhaitées.
@@ -89,10 +78,14 @@ public class VueDonneur extends VueJoueur
 
     @Override
     public void mettreAJour( ) {
-        BorderLayout bl = (BorderLayout) getContentPane().getLayout();
+        if(controleur.getDonneur() != joueur)
+        {
+            vueJ.setVisible(true);
+            controleur.ajouterObservateur(vueJ);
+            this.dispose();
+        }
 
-        JLabel atout = (JLabel) bl.getLayoutComponent(BorderLayout.NORTH);
-        atout.setText( "atout : " + controleur.getPartie().getAtout() );
+        BorderLayout bl = (BorderLayout) getContentPane().getLayout();
 
         JLabel warning = (JLabel) ( (Container) ( (Container) bl.getLayoutComponent(BorderLayout.WEST) ).getComponent( 1 ) ).getComponent( 0 );
         if (controleur.getJoueurCourant() == this.joueur) {
@@ -106,14 +99,28 @@ public class VueDonneur extends VueJoueur
         JList main = (JList) bl.getLayoutComponent(BorderLayout.EAST);
         main.setListData( joueur.getCartes().toArray( new Carte[13] ) );
 
-        Component[] jlPli  = ( (Container) bl.getLayoutComponent(BorderLayout.CENTER) ).getComponents();
+        Component[] jlPli = ((Container) bl.getLayoutComponent(BorderLayout.CENTER)).getComponents();
         Pli pli = controleur.getPliCourant();
         if (pli != null) {
             int i = 0, max = pli.getCartes().size();
-            for ( ; i < max; i++)
-                ( (JLabel) jlPli[i]).setText(pli.getCartes().get(i).toString());
-            for( ; i < 4; i++)
-                ( (JLabel) jlPli[i]).setText( "" );
+            for (; i < max; i++)
+                ((JLabel) jlPli[i]).setText(pli.getCartes().get(i).toString());
+            for (; i < 4; i++)
+                ((JLabel) jlPli[i]).setText("");
+        }
+
+        JLabel resultat = (JLabel) bl.getLayoutComponent(BorderLayout.NORTH);
+        if(controleur.isPartieFinie())
+        {
+            if (joueur.getEquipe().getPoints() >= 3) {
+                resultat.setText("Vous avez gagné");
+                resultat.setBackground(Color.GREEN);
+            }
+            else
+            {
+                resultat.setText("Vous avez perdu");
+                resultat.setBackground(Color.RED);
+            }
         }
 
     }

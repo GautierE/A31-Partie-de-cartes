@@ -41,17 +41,11 @@ public class Whist {
 		WhistControleur ctrl = new WhistControleur( p );
 
 		// Création des quatre interfaces graphiques
-		/*for( Joueur j: p.getJoueurs() )
-			new VueJoueur( ctrl, j );*/
+		for( Joueur j: p.getJoueurs() )
+			new VueJoueur( ctrl, j);
 
-		ArrayList<VueJoueur> avj = new ArrayList<>();
-		for(int i = 0;i<p.getJoueurs().size();i++) {
-			avj.add(new VueJoueur(ctrl, p.getJoueur(i)));
-			if(i == p.getJoueurs().size() - 1){
-				new VueDonneur(avj.get(i));
-			}
-		}
-		
+		ctrl.avancer();
+
 	}
 
 }

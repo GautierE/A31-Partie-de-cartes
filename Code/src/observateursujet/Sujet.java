@@ -9,8 +9,8 @@ public abstract class Sujet {
 	
 	protected void notifierObservateurs() {
 
-		for (Observateur mesObservateur : mesObservateurs)
-			mesObservateur.mettreAJour();
+		for( int i = 0; i < mesObservateurs.size(); i++ )
+			mesObservateurs.get(i).mettreAJour();
 		
 	}
 	

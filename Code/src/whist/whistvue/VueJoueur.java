@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,14 +41,13 @@ public class VueJoueur extends JFrame implements Observateur {
 		this.controleur = controleur;
 		this.joueur = joueur;
 
-		// joueur.ajouterObservateur( this );
 		controleur.ajouterObservateur(this);
 
 		// widgets
 		JLabel atout = new JLabel();
 		atout.setHorizontalAlignment(SwingConstants.CENTER);
 		atout.setOpaque(true);
-		atout.setBackground(Color.GREEN);
+		atout.setBackground(Color.WHITE);
 
 		JList<Carte> main = new JList<>();
 		main.setVisibleRowCount(13);
@@ -120,10 +120,15 @@ public class VueJoueur extends JFrame implements Observateur {
 	 * (sans passer par le contrôleur)
 	 */	
 	public void mettreAJour() {
-		BorderLayout bl = (BorderLayout) getContentPane().getLayout();
+		if(controleur.getDonneur() == joueur)
+		{
+			System.out.println("decoration donneur" + this);
+			new VueDonneur(this);
+			controleur.retirerObservateur(this);
+			this.dispose();
+		}
 
-		JLabel atout = (JLabel) bl.getLayoutComponent(BorderLayout.NORTH);
-		atout.setText("atout : " + controleur.getPartie().getAtout());
+		BorderLayout bl = (BorderLayout) getContentPane().getLayout();
 
 		JLabel info = (JLabel) bl.getLayoutComponent(BorderLayout.SOUTH);
 		int[] points = controleur.getPartie().resultats();
@@ -162,6 +167,19 @@ public class VueJoueur extends JFrame implements Observateur {
 			}
 		}
 
+		JLabel resultat = (JLabel) bl.getLayoutComponent(BorderLayout.NORTH);
+		if(controleur.isPartieFinie())
+		{
+			if (joueur.getEquipe().getPoints() >= 3) {
+				resultat.setText("Vous avez gagné");
+				resultat.setBackground(Color.GREEN);
+			}
+			else
+			{
+				resultat.setText("Vous avez perdu");
+				resultat.setBackground(Color.RED);
+			}
+		}
 	}
 
 	/*
