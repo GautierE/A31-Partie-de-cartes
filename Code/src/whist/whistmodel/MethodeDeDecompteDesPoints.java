@@ -2,6 +2,6 @@ package whist.whistmodel;
 
 public interface MethodeDeDecompteDesPoints {
 	
-	public int getPoints( Pli [] plis, Couleur atout );
+	int getPoints( Pli [] plis, Couleur atout );
 
 }

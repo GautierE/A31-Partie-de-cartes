@@ -71,7 +71,6 @@ public class WhistControleur extends Sujet {
 				return;
 
 			pliCourant.add(carteCourante);
-
 			if (pliCourant.taille() < 4)
 				// au moins encore 1 carte à jouer dans ce pli
 				joueurCourant = partie.getJoueurGauche(joueurCourant);
@@ -92,8 +91,7 @@ public class WhistControleur extends Sujet {
 					{
 						partie.getEquipe(i).compterPoints(partie.getAtout());
 					}
-
-					if(partie.getEquipe(0).getPoints() < 3 || partie.getEquipe(1).getPoints() < 3)
+					if(partie.getEquipe(0).getPoints() < 20 || partie.getEquipe(1).getPoints() < 20)
 					{
 						// Recommence une donne en changeant de donneur
 						donneur = partie.getJoueurGauche(donneur);
@@ -111,7 +109,6 @@ public class WhistControleur extends Sujet {
 
 	}
 
-	// TODO de base protected pas public
 	/**
 	 * Distribue les cartes aux joueurs et fixe l'atout.
 	 * 
@@ -119,8 +116,7 @@ public class WhistControleur extends Sujet {
 	 */
 	public void distribuerCartes() {
 
-		//TODO 52
-		PaquetDeCartes pc = new PaquetDeCartes(16);
+		PaquetDeCartes pc = new PaquetDeCartes(52);
 
 		int j = 0;
 		Carte c = null;
@@ -186,11 +182,6 @@ public class WhistControleur extends Sujet {
 	public Joueur getDonneur()
 	{
 		return donneur;
-	}
-
-	public void setDonneur(Joueur donneur)
-	{
-		this.donneur = donneur;
 	}
 
 	public boolean isPartieFinie() {

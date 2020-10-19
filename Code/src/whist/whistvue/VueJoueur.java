@@ -7,7 +7,6 @@ import java.awt.Container;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -122,7 +121,6 @@ public class VueJoueur extends JFrame implements Observateur {
 	public void mettreAJour() {
 		if(controleur.getDonneur() == joueur)
 		{
-			System.out.println("decoration donneur" + this);
 			new VueDonneur(this);
 			controleur.retirerObservateur(this);
 			this.dispose();

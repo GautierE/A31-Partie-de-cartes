@@ -1,6 +1,6 @@
 package whist.whistvue;
 
-public class VueDecorator extends VueJoueur
+public abstract class VueDecorator extends VueJoueur
 {
     private VueJoueur vueJ;
 
@@ -8,5 +8,9 @@ public class VueDecorator extends VueJoueur
     {
         super(vueJ.getControleur(), vueJ.getJoueur());
         this.vueJ = vueJ;
+    }
+
+    public VueJoueur getVueJ() {
+        return vueJ;
     }
 }

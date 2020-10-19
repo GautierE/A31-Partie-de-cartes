@@ -1,24 +1,20 @@
 package whist.whistvue;
 
-import whist.whistcontroleur.WhistControleur;
+
 import whist.whistmodel.Carte;
-import whist.whistmodel.Joueur;
+
 import whist.whistmodel.Pli;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
-public class VueDonneur extends VueJoueur
+
+public class VueDonneur extends VueDecorator
 {
-    private VueJoueur vueJ;
 
     public VueDonneur(VueJoueur vueJ)
     {
-        super(vueJ.getControleur(), vueJ.getJoueur());
-        this.vueJ = vueJ;
+        super(vueJ);
 
         JButton jbDistribuer = new JButton("Distribuer");
         jbDistribuer.setForeground(Color.RED);
@@ -59,30 +55,22 @@ public class VueDonneur extends VueJoueur
     // Méthode appelée par le donneur après avoir distribué les cartes pour lancer la partie
     public void commencerPartie() {
 
-        vueJ.getControleur().avancer();
+        super.getVueJ().getControleur().avancer();
 
         BorderLayout bl = (BorderLayout) this.getContentPane().getLayout();
         JButton go = (JButton) ( (Container) ( (Container) bl.getLayoutComponent(BorderLayout.WEST) ).getComponent( 0 ) ).getComponent( 1 );
         go.setForeground( Color.LIGHT_GRAY );
     }
 
-    // Calcule la position de la fenêtre sur l'écran en fonction de la largeur et de la hauteur souhaitées.
-    // Prend en compte la résolution et la dimension de l'écran.
-    @Override
-    protected Point calculerPosition(int width, int height) {
-        Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
-        p.translate( -width/2, -3*height/2 );
-        return p;
-    }
-
-
     @Override
     public void mettreAJour( ) {
         if(controleur.getDonneur() != joueur)
         {
-            vueJ.setVisible(true);
-            controleur.ajouterObservateur(vueJ);
+            super.getVueJ().setVisible(true);
             this.dispose();
+
+            controleur.retirerObservateur(this);
+            controleur.ajouterObservateur(super.getVueJ());
         }
 
         BorderLayout bl = (BorderLayout) getContentPane().getLayout();
